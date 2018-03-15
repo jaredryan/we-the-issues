@@ -67,6 +67,7 @@ class Comment extends Component {
                             placeholder="Add New Comment"
                             onChange={this.handleChange}
                         />
+                        <br/>
                         <button type="submit">Save</button>
                         <button onClick={this.handleCloseForm}>Cancel</button>
                     </form>

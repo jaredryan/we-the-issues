@@ -40,7 +40,7 @@ class EditForm extends Component {
 
     render() {
         return(
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className="issueEdit">
                 <input
                     type="text"
                     name="title"
@@ -48,13 +48,14 @@ class EditForm extends Component {
                     onChange={this.handleChange}
                     value={this.state.title}
                 />
-                <input
+                <textarea
                     type="text"
                     name="description"
                     placeholder="Description"
                     onChange={this.handleChange}
                     value={this.state.description}
-                />
+                ></textarea>
+                <br/>
                 <button type="submit">Save</button>
                 <button onClick={this.handleCancel}>Cancel</button>
             </form>

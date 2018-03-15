@@ -49,7 +49,7 @@ class Form extends Component {
                         onChange={this.handleChange}
                         value={this.state.description}
                         className="description"
-                    />
+                    ></textarea>
                 </div>
                 <br/>
                 <button>Submit</button>

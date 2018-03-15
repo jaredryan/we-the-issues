@@ -27,7 +27,9 @@ class IssueList extends Component {
         return(
             <div className="issueList">
                 {this.props.loading ?
-                    <h3>Loading...</h3>:
+                    <div className="issueLoader"> 
+                        <img src={require('./Images/ajax-loader.gif')} alt="Loading..."/>
+                    </div> :
                     issues}
             </div>
         );

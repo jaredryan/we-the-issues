@@ -1,0 +1,273 @@
+* {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    font-family: 'Karma', serif;
+    font-weight: 200;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 400;
+}
+
+button:hover {
+    cursor: pointer;
+    border: 1px solid rgb(107, 104, 99)
+}
+
+button {
+    border: 1px solid rgb(207, 204, 199);
+}
+
+.banner {
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(159, 237, 215, 0.5)), to(rgba(159, 237, 215, 0.5))), url("Images/title.jpg") no-repeat center center;
+    background: linear-gradient(rgba(159, 237, 215, 0.5), rgba(159, 237, 215, 0.5)), url("Images/title.jpg") no-repeat center center;
+    background-size: cover;
+    height: 500px;
+    position: relative;
+}
+
+.banner h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    font-size: 90px;
+    font-weight: 200;
+    color: black;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.issueList {
+    background-color: #EDEAE5;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.issue {
+    background-color: white;
+    border: 1px solid rgb(207, 204, 199);
+    border-radius: 5px;
+    color: black;
+    margin: 30px auto;
+    text-align: center;
+    -webkit-box-shadow: 4px 8px 30px 1px black;
+            box-shadow: 4px 8px 30px 1px black;
+    width: 400px;
+    padding: 0px 10px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.newPost {
+    background-color: #EDEAE5;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.inputsWrapper {
+    width: 50%;
+    min-width: 340px;
+    -webkit-box-shadow: 4px 8px 30px 1px black;
+            box-shadow: 4px 8px 30px 1px black;
+    margin: 0px auto;
+    padding: 0;
+    border-radius: 5px;
+}
+
+.title {
+    width: 100%;
+    padding-left: 15px;
+    font-size: 19px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid rgb(207, 204, 199);
+    font-weight: 400;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.description {
+    width: 100%;
+    padding-left: 15px;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid rgb(207, 204, 199);
+    font-weight: 200;
+    margin-bottom: -8px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.newPost button {
+    font-size: 20px;
+    background-color: #FCE181;
+    color: #026670;
+    width: 150px;
+    border-radius: 5px;
+    padding-top: 6px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    margin-top: 10px;
+    -webkit-box-shadow: 2px 2px 4px 1px black;
+            box-shadow: 2px 2px 4px 1px black;
+}
+
+.newPost button:hover {
+    background-color: white;
+    color: black;
+    -webkit-box-shadow: 1px 1px 2px 0px black;
+            box-shadow: 1px 1px 2px 0px black;
+}
+
+.issueInfo form button:hover,
+.issueInfo .voting button:hover,
+.issueInfo button:hover {
+    background-color: #EDEAE5;
+    color: black;
+}
+
+.issueInfo h1 {
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.issueInfo h2 {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+.issueInfo h3 {
+    font-size: 20px;
+    font-weight: 400;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.issueInfo .voting button {
+    font-size: 20px;
+    color: white;
+    background-color: #026670;
+    border-radius: 5px;
+    height: 28px;
+    padding-top: 0px;
+    width: 28px;
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.issueInfo button {
+    font-size: 20px;
+    border-radius: 5px;
+    height: 28px;
+    width: 100px;
+    vertical-align: middle;
+    background-color: #FEF9C7;
+    color: #026670;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: 400;
+}
+
+.issueInfo {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.issueInfo input {
+    width: 100%;
+    max-width: 500px;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 8px;
+    padding-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 34px;
+    border: 1px solid rgb(207, 204, 199);
+    border-radius: 5px;
+}
+
+.issueInfo form button {
+    font-size: 18px;
+    border-radius: 5px;
+    height: 26px;
+    width: 75px;
+    font-weight: 500;
+    vertical-align: middle;
+    color: white;
+    background-color: #026670;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 30px;
+}
+
+.commentInfo {
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(159, 237, 215, 0.6);
+    border-radius: 10px;
+    margin: 15px auto;
+    padding: 10px 20px;
+    text-align: left;
+    -webkit-box-shadow: 2px 2px 4px 1px black;
+            box-shadow: 2px 2px 4px 1px black;
+}
+
+.commentInfo h4,
+.commentInfo h5 {
+    margin: 0;
+}
+
+.commentInfo h4{
+    margin: 0;
+    margin-bottom: 15px;
+}
+
+.commentInfo h5 {
+    font-size: 14px;
+}
+
+.commentInfo button {
+    font-size: 14px;
+    border-radius: 5px;
+    height: 22px;
+    width: 60px;
+    padding-top: 2px;
+    font-weight: 500;
+    vertical-align: middle;
+    color: #026670;
+    background-color: white;
+    margin-top: 3px;
+}
+
+.commentInfo .row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}

@@ -1,6 +1,8 @@
-import { createStore, applyMiddleware } from "redux";
-import axios from "axios";
-import thunk from "redux-thunk";
+import { createStore, applyMiddleware } from 'redux';
+import axios from 'axios';
+import thunk from 'redux-thunk';
+
+import { client, webSocketIsReady } from '../App';
 
 export const getIssues = () => {
     return dispatch => {
@@ -195,29 +197,50 @@ export const updateComment = (_id, _commentId, updatedComment) => {
     }
 }
 
+export const dispatchAction = action => dispatch => dispatch({
+    type: 'DISPATCH_ACTION',
+    action
+});
+
+const nonStateChangingActions = [
+    '@@INIT',
+    'LOADING',
+    'GET_ISSUES',
+    'ERROR',
+]
+
 const initialState = {
     issues: [],
     error: "",
     loading: false
 }
 
-export const reducer = (prevState = initialState, action) => {
+export const reducer = (prevState = initialState, inputAction) => {
     let issues;
     let updatedIssue;
     let deletedIndex;
+    let action = inputAction;
+    if (action.type === 'DISPATCH_ACTION') {
+        action = action.action;
+    } else if (webSocketIsReady && !nonStateChangingActions.includes(action.type)) {
+        client.send(JSON.stringify(action));
+    }
+    
     switch (action.type) {
-        case "GET_ISSUES":
+        case "GET_ISSUES": {
             return {
                 issues: action.issues,
                 loading: false,
                 error: ""
             };
-        case "ADD_ISSUE":
+        }
+        case "ADD_ISSUE": {
             return {
                 issues: [action.issue, ...prevState.issues],
                 loading: false,
                 error: ""
             };
+        }
         case "CHANGE_ONE_VOTE":
             issues = prevState.issues.slice();
             updatedIssue = issues.find(issue => issue._id === action._id)

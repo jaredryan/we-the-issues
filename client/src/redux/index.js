@@ -1,304 +1,186 @@
-import { createStore, applyMiddleware } from 'redux';
+import { configureStore, createSlice, getDefaultMiddleware } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 import axios from 'axios';
-import thunk from 'redux-thunk';
 
-import { client, webSocketIsReady } from '../App';
-
-export const getIssues = () => {
-    return dispatch => {
-        dispatch({
-            type: "LOADING"
-        });
-        setTimeout(() => {
-            axios.get("/issues")
-            .then(response => {
-                dispatch({
-                    type: "GET_ISSUES",
-                    issues: response.data
-                });
-            })
-            .catch(error => {
-                dispatch({
-                    type: "ERROR",
-                    error: error.response.statusText
-                });
-            });
-        }, 1000)
-    }
-}
-
-export const addIssue = issue => {
-    return dispatch => {
-        issue.votes = 0;
-        axios.post("/issues", issue)
-        .then(response => {
-            dispatch({
-                type: "ADD_ISSUE",
-                issue: response.data
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const addOneVote = issue => {
-    return dispatch => {
-        const votes = issue.votes + 1;
-        axios.put("/issues/" + issue._id , {votes})
-        .then(response => {
-            dispatch({
-                type: "CHANGE_ONE_VOTE",
-                votes,
-                _id: issue._id
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const removeOneVote = issue => {
-    return dispatch => {
-        const votes = issue.votes - 1;
-        axios.put("/issues/" + issue._id , {votes})
-        .then(response => {
-            dispatch({
-                type: "CHANGE_ONE_VOTE",
-                votes,
-                _id: issue._id
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const addCommentToIssue = (text, _id) => {
-    return dispatch => {
-        const currentdate = new Date();
-        let date = currentdate.getHours() + ":";
-        date += currentdate.getMinutes() < 10 ?
-                         "0" + currentdate.getMinutes() :
-                         currentdate.getMinutes();
-        date += "@" + (currentdate.getMonth()+1) + "/"
-                       + currentdate.getDate()  + "/"
-                       + currentdate.getFullYear().toString().slice(2)
-        const comment = {text, date}
-        axios.post(`/issues/${_id}/comments`, comment)
-        .then(response => {
-            dispatch({
-                type: "UPDATE_COMMENT_TO_ISSUE",
-                updatedIssue: response.data,
-                _id
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const updateIssue = (issue, _id) => {
-    return dispatch => {
-        axios.put("/issues/" + _id , issue)
-        .then(response => {
-            dispatch({
-                type: "UPDATE_ISSUE",
-                issue,
-                _id
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const deleteIssue = _id => {
-    return dispatch => {
-        axios.delete("/issues/" + _id)
-        .then(response => {
-            dispatch({
-                type: "DELETE_ISSUE",
-                _id
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const deleteComment = (_id, _commentId) => {
-    return dispatch => {
-        axios.delete(`/issues/${_id}/comment/${_commentId}`)
-        .then(response => {
-            dispatch({
-                type: "UPDATE_COMMENT_TO_ISSUE",
-                updatedIssue: response.data,
-                _id
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const updateComment = (_id, _commentId, updatedComment) => {
-    return dispatch => {
-        const currentdate = new Date();
-        let date = currentdate.getHours() + ":";
-        date += currentdate.getMinutes() < 10 ?
-                         "0" + currentdate.getMinutes() :
-                         currentdate.getMinutes();
-        date += "@" + (currentdate.getMonth()+1) + "/"
-                       + currentdate.getDate()  + "/"
-                       + currentdate.getFullYear().toString().slice(2);
-        axios.put(`/issues/${_id}/comment/${_commentId}`, {text: updatedComment, date})
-        .then(response => {
-            dispatch({
-                type: "UPDATE_COMMENT_TO_ISSUE",
-                updatedIssue: response.data,
-                _id
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: "ERROR",
-                error: error.response.statusText
-            });
-        });
-    }
-}
-
-export const dispatchAction = action => dispatch => dispatch({
-    type: 'DISPATCH_ACTION',
-    action
-});
-
-const nonStateChangingActions = [
-    '@@INIT',
-    'LOADING',
-    'GET_ISSUES',
-    'ERROR',
-]
+import { client } from '../App';
 
 const initialState = {
     issues: [],
     error: "",
     loading: false
-}
+};
 
-export const reducer = (prevState = initialState, inputAction) => {
-    let issues;
-    let updatedIssue;
-    let deletedIndex;
-    let action = inputAction;
-    if (action.type === 'DISPATCH_ACTION') {
-        action = action.action;
-    } else if (webSocketIsReady && !nonStateChangingActions.includes(action.type)) {
-        client.send(JSON.stringify(action));
-    }
-    
-    switch (action.type) {
-        case "GET_ISSUES": {
-            return {
-                issues: action.issues,
-                loading: false,
-                error: ""
-            };
-        }
-        case "ADD_ISSUE": {
-            return {
-                issues: [action.issue, ...prevState.issues],
-                loading: false,
-                error: ""
-            };
-        }
-        case "CHANGE_ONE_VOTE":
-            issues = prevState.issues.slice();
-            updatedIssue = issues.find(issue => issue._id === action._id)
-            updatedIssue.votes = action.votes
-            return {
-                issues,
-                loading: false,
-                error: ""
-            };
-        case "UPDATE_ISSUE":
-            issues = prevState.issues.slice();
-            updatedIssue = issues.find(issue => issue._id === action._id)
-            for (let field in action.issue) {
-                updatedIssue[field] = action.issue[field];
+const updateOtherClients = (action) => !action.payload.fromWebSocket && client.send(JSON.stringify(action));
+
+const slice = createSlice({
+    name: 'issues',
+    initialState,
+    reducers: {
+        getIssues: (state, action) => {
+            state.issues = action.payload.issues;
+            state.loading = false;
+            state.error = "";
+        },
+        addIssue: (state, action) => {
+            state.issues.unshift(action.payload.issue);
+            state.loading = false;
+            state.error = "";
+            updateOtherClients(action);
+        },
+        changeOneVote: (state, action) => {
+            const issues = state.issues;
+            const updatedIssue = issues.find(issue => issue._id === action.payload._id);
+            updatedIssue.votes = action.payload.votes;
+            state.issues = issues;
+            state.loading = false;
+            state.error = "";
+            updateOtherClients(action);
+        },
+        updateIssue: (state, action) => {
+            const issues = state.issues;
+            const updatedIssue = issues.find(issue => issue._id === action.payload._id);
+            for (let field in action.payload.issue) {
+                updatedIssue[field] = action.payload.issue[field];
             }
-            return {
-                issues,
-                loading: false,
-                error: ""
-            };
-        case "UPDATE_COMMENT_TO_ISSUE":
-            issues = prevState.issues.slice();
-            updatedIssue = issues.find(issue => issue._id === action._id);
-            updatedIssue.comments = action.updatedIssue.comments;
-            return {
-                issues,
-                loading: false,
-                error: ""
-            };
-        case "DELETE_ISSUE":
-            issues = prevState.issues.slice();
-            deletedIndex = issues.findIndex(issue => issue._id === action._id);
-            issues.splice(deletedIndex, 1)
-            return {
-                issues,
-                loading: false,
-                error: ""
-            };
-        case "LOADING":
-            return {
-                issues: prevState.issues,
-                loading: true,
-                error: ""
-            };
-        case "ERROR":
-            return {
-                ...prevState,
-                error: action.error,
-                loading: false
-            };
-        default:
-            return prevState;
+            state.issues = issues;
+            state.loading = false;
+            state.error = "";
+            updateOtherClients(action);
+        },
+        updateCommentToIssue: (state, action) => {
+            const issues = state.issues;
+            const updatedIssue = issues.find(issue => issue._id === action.payload._id);
+            updatedIssue.comments = action.payload.updatedIssue.comments;
+            state.issues = issues;
+            state.loading = false;
+            state.error = "";
+            updateOtherClients(action);
+        },
+        deleteIssue: (state, action) => {
+            const issues = state.issues;
+            const deletedIndex = issues.findIndex(issue => issue._id === action.payload._id);
+            issues.splice(deletedIndex, 1);
+            state.issues = issues;
+            state.loading = false;
+            state.error = "";
+            updateOtherClients(action);
+        },
+        loading: (state) => {
+            state.loading = true;
+            state.error = "";
+        },
+        apiError: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
+});
+
+export const getIssues = () => dispatch => {
+    slice.actions.loading();
+    setTimeout(() => {
+        axios.get("/issues")
+            .then(response => dispatch(slice.actions.getIssues({ issues: response.data })))
+            .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+    }, 1000)
 }
 
+export const addIssue = issue => dispatch => {
+    issue.votes = 0;
+    axios.post("/issues", issue)
+        .then(response => dispatch(slice.actions.addIssue({ issue: response.data })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+}
 
-export default createStore(
-    reducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-    applyMiddleware(thunk)
-);
+export const updateIssue = (issue, _id) => dispatch => {
+    axios.put("/issues/" + _id, issue)
+        .then(() => dispatch(slice.actions.updateIssue({
+            issue,
+            _id
+        })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+};
+
+export const deleteIssue = _id => dispatch => {
+    axios.delete("/issues/" + _id)
+        .then(() => dispatch(slice.actions.deleteIssue({ _id })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+};
+
+export const addCommentToIssue = (text, _id) => dispatch => {
+    const currentdate = new Date();
+    let date = currentdate.getHours() + ":";
+    date += currentdate.getMinutes() < 10 ?
+        "0" + currentdate.getMinutes() :
+        currentdate.getMinutes();
+    date += "@" + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getDate() + "/"
+        + currentdate.getFullYear().toString().slice(2)
+    const comment = { text, date }
+    axios.post(`/issues/${_id}/comments`, comment)
+        .then(response => dispatch(slice.actions.updateCommentToIssue({
+            updatedIssue: response.data,
+            _id
+        })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+}
+
+export const addOneVote = issue => dispatch => {
+    const votes = issue.votes + 1;
+    axios.put("/issues/" + issue._id, { votes })
+        .then(() => dispatch(slice.actions.changeOneVote({
+            votes,
+            _id: issue._id
+        })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+};
+
+export const deleteComment = (_id, _commentId) => dispatch => {
+    axios.delete(`/issues/${_id}/comment/${_commentId}`)
+        .then(response => dispatch(slice.actions.updateCommentToIssue({
+            updatedIssue: response.data,
+            _id
+        })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+};
+
+export const removeOneVote = issue => dispatch => {
+    const votes = issue.votes - 1;
+    axios.put("/issues/" + issue._id, { votes })
+        .then(() => dispatch(slice.actions.changeOneVote({
+            votes,
+            _id: issue._id
+        })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+};
+
+export const updateComment = (_id, _commentId, updatedComment) => dispatch => {
+    const currentdate = new Date();
+    let date = currentdate.getHours() + ":";
+    date += currentdate.getMinutes() < 10 ?
+        "0" + currentdate.getMinutes() :
+        currentdate.getMinutes();
+    date += "@" + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getDate() + "/"
+        + currentdate.getFullYear().toString().slice(2);
+    axios.put(`/issues/${_id}/comment/${_commentId}`, { text: updatedComment, date })
+        .then(response => dispatch(slice.actions.updateCommentToIssue({
+            updatedIssue: response.data,
+            _id
+        })))
+        .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+};
+
+const removeIssuesFromAction = (action) => action.type.slice(7);
+export const dispatchAction = (action) => dispatch => dispatch(slice.actions[removeIssuesFromAction(action)]({
+    ...action.payload,
+    fromWebSocket: true,
+}));
+
+export default configureStore({ 
+    reducer: slice.reducer,
+    middleware: [
+        ...getDefaultMiddleware(),
+        logger,
+    ]
+});

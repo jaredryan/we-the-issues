@@ -15,7 +15,6 @@ class App extends Component {
             webSocketIsReady = true;
         };
         client.onmessage = (message) => {
-            console.log('on message')
             this.props.dispatchAction(JSON.parse(message.data));
         };
     }

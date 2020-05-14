@@ -40,7 +40,7 @@ const clients = {};
 const logs = [];
 
 // Update all clients 
-const sendData = (json) => Object.keys(clients).forEach((key) => clients[key].sendUTF(json));
+const sendData = (json, userId) => Object.keys(clients).forEach((key) => key !== userId && clients[key].sendUTF(json));
 
 wsServer.on('request', request => {
     // Can rewrite this part of the code to accept only the requests from allowed origin
@@ -54,12 +54,12 @@ wsServer.on('request', request => {
     
     connection.on('message', message => {
         if (message.type === 'utf8') {
-            sendData(JSON.stringify(JSON.parse(message.utf8Data), userId));
+            sendData(JSON.stringify(JSON.parse(message.utf8Data)), userId);
         }
     });
 
     connection.on('close', () => {
-        logs.push(`${clients[userId]} left.`);
+        logs.push(`${userId} left.`);
         delete clients[userId];
     });
 });

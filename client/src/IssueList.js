@@ -9,7 +9,7 @@ class IssueList extends Component {
     }
 
     render() {
-        const issues = this.props.issues && this.props.issues
+        const issues = this.props.issues && this.props.issues.slice()
             .sort((a, b) => b.votes - a.votes)
             .map((issue, i) => {
             return (

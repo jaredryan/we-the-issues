@@ -1,0 +1,31 @@
+@import '../../index.scss';
+
+.issue {
+    background-color: var(--secondary-background-color); 
+    color: var(--primary-font-color);
+    margin: 50px 25px 0;
+    text-align: center;
+    padding: 50px;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    @include universal-border-radius;
+    @include universal-box-shadow;
+
+    svg:hover {
+        @include hover-behavior;
+    }
+
+    .deleteIcon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+@mixin issue-button-dimensions {
+    width: 100px;
+    height: 28px;
+    vertical-align: middle;
+    padding-top: 3px;
+}

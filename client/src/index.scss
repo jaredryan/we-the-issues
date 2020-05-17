@@ -7,12 +7,12 @@
 
 :root {
     --primary-color: #ff8383;
-    --secondary-color: rgba(195, 205, 230, 0.95);
+    --secondary-color: rgba(195, 205, 230);
     --tertiary-color: rgba(155, 222, 255, 0.8);
     --background-color: rgb(229, 228, 226);
     --secondary-background-color: #fffafa;
     --border-color: rgb(207, 204, 199);
-    --primary-font-color: black;
+    --primary-font-color: rgb(50, 50, 50);
     --secondary-font-color: #fffafa;
 }
 
@@ -22,8 +22,76 @@ body {
     background-color: var(--background-color);
 }
 
+@mixin hover-behavior {
+    cursor: pointer;
+    opacity: 0.75;
+    transition-duration: 300ms;
+}
+
+@mixin universal-box-shadow {
+    -webkit-box-shadow: 0px 3px 5px -3px black;
+            box-shadow: 0px 3px 5px -3px black;
+}
+
+@mixin universal-border-radius {
+    border-radius: 2px;
+}
+
+@mixin input-width-and-padding {
+    width: 100%;
+    padding: 5px 15px;
+}
+
+@mixin input-margin {
+    margin: 10px 0;
+}
+
+@mixin input-max-width {
+    max-width: 500px;
+}
+
+@mixin primary-button-colors {
+    background-color: var(--primary-color);
+    color: var(--secondary-font-color);
+}
+
+@mixin secondary-button-colors {
+    background-color: var(--secondary-color);
+    color: var(--secondary-font-color);
+}
+
+@mixin primary-button-colors {
+    background-color: var(--primary-color);
+    color: var(--secondary-font-color);
+}
+
+@mixin inverse-primary-button-colors {
+    color: var(--primary-color);
+    background-color: var(--secondary-font-color);
+}
+
+@mixin inverse-primary-button-colors {
+    color: var(--primary-color);
+    background-color: var(--secondary-font-color);
+}
+
+@mixin large-font {
+    font-size: 24px;
+}
+
+@mixin medium-font {
+    font-size: 16px;
+}
+
+@mixin small-font {
+    font-size: 14px;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'IBM Plex Serif', serif;
+}
+
+h1, h2, h3, h4, h5, h6, input, button {
     font-weight: 400;
 }
 
@@ -37,343 +105,11 @@ button {
     border: none;
 
     &:hover {
-        cursor: pointer;
-        opacity: 0.75;
-        transition-duration: 300ms;
+        @include hover-behavior;
     }
-}
-
-@mixin universal-box-shadow {
-    -webkit-box-shadow: 0px 3px 5px -3px black;
-            box-shadow: 0px 3px 5px -3px black;
-}
-
-@mixin universal-border-radius {
-    border-radius: 2px;
 }
 
 input,
-textarea,
-.buttonContainer {
+textarea {
     background-color: var(--secondary-background-color);
-}
-
-.banner {
-    background: -webkit-gradient(linear, left top, left bottom, from(rgba(155,221,255, 0.5)), to(rgba(155,221,255, 0.5))), url("Images/title.jpg") no-repeat center center;
-    background: linear-gradient(rgba(155,221,255, 0.5), rgba(155,221,255, 0.5)), url("Images/title.jpg") no-repeat center center;
-    background-size: cover;
-    height: 500px;
-    position: relative;
-}
-
-.banner h1 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-    font-size: 90px;
-    font-weight: 200;
-    color: var(--primary-font-color);
-    margin-top: 0;
-    margin-bottom: 0;
-    text-align: center;
-}
-
-.issueList {
-    background-color: var(--background-color);
-    padding-left: 5%;
-    padding-right: 5%;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    padding-bottom: 20px;
-    padding-top: 20px;
-}
-
-.issue {
-    background-color: var(--secondary-background-color);
-    @include universal-border-radius;
-    color: var(--primary-font-color);
-    margin: 30px auto;
-    text-align: center;
-    @include universal-box-shadow;
-    width: 400px;
-    padding: 0px 10px;
-    width: 100%;
-    max-width: 1000px;
-}
-
-.newPost {
-    background-color: var(--background-color);
-    margin-bottom: 0px;
-    margin-top: 0px;
-    text-align: center;
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
-.inputsWrapper {
-    margin: 0 auto;
-    padding: 0;
-    max-width: 500px;
-    width: 90%;
-    @include universal-border-radius;
-    @include universal-box-shadow;
-}
-
-.title {
-    width: 100%;
-    padding-left: 15px;
-    font-size: 19px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border: none;
-    font-weight: 400;
-    @include universal-border-radius;
-}
-
-.description {
-    width: 100%;
-    padding-left: 15px;
-    font-size: 18px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border: none;
-    border-top: 1px solid var(--border-color);
-    font-weight: 200;
-    margin-bottom: -8px;
-    margin-top: -1px;
-    @include universal-border-radius;
-    height: 60px;
-}
-
-.newPost .formButtonContainer {
-    background-color: var(--secondary-background-color);
-    width: fit-content;
-    margin: auto;
-    margin-top: 10px;
-
-    button {
-        font-size: 20px;
-        background-color: var(--primary-color);
-        color: var(--secondary-font-color);
-        width: 150px;
-        @include universal-border-radius;
-        @include universal-box-shadow;
-        padding-top: 6px;
-        font-weight: 400;
-        letter-spacing: 0.6px;
-    }
-}
-
-.issueList .issueLoader {
-    width: 100%;
-    height: 200px;
-    position: relative;
-}
-
-.issueList img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-}
-
-.comment button:hover {
-    background-color: rgb(245, 244, 242);
-    opacity: 0.95;
-}
-
-.issueInfo h1 {
-    font-size: 32px;
-    margin-top: 0;
-}
-
-.issueInfo h2 {
-    font-size: 22px;
-    font-weight: 300;
-}
-
-.issueInfo h3 {
-    font-size: 20px;
-    font-weight: 400;
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
-    vertical-align: middle;
-}
-
-.issueInfo .voting button {
-    font-size: 20px;
-    color: var(--secondary-font-color);
-    background-color: var(--primary-color);
-    @include universal-border-radius;
-    height: 28px;
-    padding-top: 0px;
-    width: 28px;
-    vertical-align: middle;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.issueInfo button {
-    font-size: 20px;
-    @include universal-border-radius;
-    height: 28px;
-    width: 100px;
-    vertical-align: middle;
-    background-color: var(--secondary-color);
-    color: var(--secondary-font-color);
-    margin-left: 10px;
-    margin-right: 10px;
-    font-weight: 400;
-}
-
-.issueInfo {
-    padding-bottom: 20px;
-    padding-top: 20px;
-}
-
-.issueInfo input {
-    width: 100%;
-    max-width: 500px;
-    font-size: 16px;
-    padding-left: 15px;
-    padding-top: 8px;
-    padding-bottom: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 34px;
-    border: 1px solid var(--border-color);
-    @include universal-border-radius;
-}
-
-.issueEdit {
-    padding-bottom: 20px;
-    padding-top: 20px;
-}
-
-.issueEdit input,
-.issueEdit textarea {
-    width: 100%;
-    max-width: 500px;
-    font-size: 16px;
-    padding-left: 15px;
-    padding-top: 8px;
-    padding-bottom: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 34px;
-    border: 1px solid var(--border-color);
-}
-
-.issueEdit button {
-    font-size: 18px;
-    @include universal-border-radius;
-    height: 26px;
-    width: 75px;
-    font-weight: 500;
-    vertical-align: middle;
-    color: var(--secondary-font-color);
-    background-color: var(--primary-color);
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 30px;
-}
-
-.issueEdit input {
-    font-size: 20px;
-    margin-bottom: 0;
-    @include universal-border-radius;
-}
-
-.issueEdit textarea {
-    font-size: 18px;
-    margin-top: -1px;
-    @include universal-border-radius;
-    height: 60px;
-}
-
-.issueInfo form button {
-    font-size: 18px;
-    @include universal-border-radius;
-    height: 26px;
-    width: 75px;
-    font-weight: 500;
-    vertical-align: middle;
-    color: var(--secondary-font-color);
-    background-color: var(--primary-color);
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 30px;
-}
-
-.commentInfo,
-.comment form {
-    width: 100%;
-    max-width: 500px;
-    background-color: var(--tertiary-color);
-    border-radius: 10px;
-    margin: 15px auto;
-    padding: 10px 20px;
-    text-align: left;
-    @include universal-box-shadow;
-}
-
-.comment input {
-    border: none;
-}
-
-.comment form {
-    text-align: center;
-}
-
-.commentInfo h4,
-.commentInfo h5 {
-    margin: 0;
-}
-
-.commentInfo h4 {
-    margin: 0;
-    margin-bottom: 15px;
-}
-
-.commentInfo h5 {
-    font-size: 14px;
-}
-
-.commentInfo button,
-.comment form button {
-    font-size: 14px;
-    @include universal-border-radius;
-    height: 22px;
-    width: 60px;
-    padding-top: 2px;
-    font-weight: 500;
-    vertical-align: middle;
-    color: var(--primary-color);
-    background-color: var(--secondary-background-color);
-}
-
-.comment form button {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.commentInfo .row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    margin-top: 3px;
-
-    &:first-of-type {
-        margin-top: 0px;
-    }
 }

@@ -1,0 +1,32 @@
+@import '../../index.scss';
+
+.issue .comment {
+    text-align: left;
+
+    .commentInfo,
+    form {
+        width: 100%;
+        background-color: var(--tertiary-color);
+        border-radius: 10px;
+        margin: 15px auto;
+        padding: 10px 20px;
+        @include universal-box-shadow;
+        @include input-max-width;
+    }
+
+    button {
+        height: 22px;
+        width: 60px;
+        padding-top: 2px;
+        font-weight: 500;
+        vertical-align: middle;
+        @include inverse-primary-button-colors;
+        @include universal-border-radius;
+        @include small-font;
+    }
+
+    button:hover {
+        background-color: rgb(245, 244, 242);
+        opacity: 0.95;
+    }
+}

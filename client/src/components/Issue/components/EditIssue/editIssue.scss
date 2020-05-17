@@ -1,0 +1,43 @@
+@import '../../../../index.scss';
+@import '../../issue.scss';
+
+.issueEdit {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    input, textarea, button {
+        @include universal-border-radius;
+    }
+
+    input,
+    textarea {
+        margin: 0;
+        height: 34px;
+        border: 1px solid var(--border-color);
+        @include input-width-and-padding;
+        @include input-max-width;
+        @include medium-font;
+    }
+
+    textarea,
+    button {
+        @include medium-font;
+    }
+
+    input {
+        @include medium-font;
+    }
+
+    textarea {
+        margin-top: -1px;
+        height: 60px;
+    }
+
+    button {
+        margin: 15px 10px 0;
+        @include primary-button-colors;
+        @include issue-button-dimensions;
+    }
+}

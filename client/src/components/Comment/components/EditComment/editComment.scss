@@ -1,0 +1,13 @@
+@import '../../../../index.scss';
+
+.issue .comment form {
+    text-align: center;
+
+    input {
+        border: none;
+    }
+
+    button {
+        @include input-margin;
+    }
+}

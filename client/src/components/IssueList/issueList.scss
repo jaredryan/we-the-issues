@@ -1,0 +1,16 @@
+.issueList {
+    margin: 20px 2.5% 50px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .issueLoader {
+        width: 100%;
+        height: 200px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    } 
+}

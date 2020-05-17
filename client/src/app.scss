@@ -1,0 +1,18 @@
+.banner {
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(155,221,255, 0.5)), to(rgba(155,221,255, 0.5))), url("/title.jpg") no-repeat center center;
+    background: linear-gradient(rgba(155,221,255, 0.5), rgba(155,221,255, 0.5)), url("/title.jpg") no-repeat center center;
+    background-size: cover;
+    height: 500px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+        font-size: 90px;
+        font-weight: 200;
+        color: var(--primary-font-color);
+        margin: 0;
+        text-align: center;
+    }
+}

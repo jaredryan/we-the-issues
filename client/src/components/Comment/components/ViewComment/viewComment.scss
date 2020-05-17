@@ -1,0 +1,38 @@
+@import '../../../../index.scss';
+
+.issue .comment .commentInfo {
+    h4,
+    h5 {
+        margin: 0;
+    }
+
+    h4 {
+        margin-bottom: 15px;
+        @include medium-font;
+    }
+
+    h5 {
+        @include small-font;
+    }
+
+    .row {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        margin-top: 3px;
+
+        &:first-of-type {
+            margin-top: 0px;
+        }
+    }
+
+    button {
+        margin: 0;
+    }
+}

@@ -2,34 +2,33 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { w3cwebsocket } from 'websocket';
 
-import Form from './Form';
-import IssueList from './IssueList';
-import { dispatchAction } from './redux';
+import IssueForm from './components/IssueForm';
+import IssueList from './components/IssueList';
+import { getIssues, dispatchAction } from './IssuesSlice';
+import './app.scss';
 
 export const client = new w3cwebsocket('ws://localhost:8000');
-export let webSocketIsReady = false;
 
 class App extends Component {
     componentWillMount() {
-        client.onopen = () => {
-            webSocketIsReady = true;
-        };
-        client.onmessage = (message) => {
-            this.props.dispatchAction(JSON.parse(message.data));
-        };
+        client.onmessage = (message) => this.props.dispatchAction(JSON.parse(message.data));
+    }
+
+    componentDidMount() {
+        this.props.getIssues();
     }
     
     render() {
-        return(
+        return (
             <div>
                 <div className="banner">
                     <h1>We, the Issues</h1>
                 </div>
-                <Form />
+                <IssueForm />
                 <IssueList />
             </div>
         );
     }
 }
 
-export default connect(state => state, { dispatchAction })(App)
+export default connect(null, { getIssues, dispatchAction })(App)

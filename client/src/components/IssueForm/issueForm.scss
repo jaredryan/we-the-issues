@@ -1,0 +1,56 @@
+@import '../../index.scss';
+
+.newPost {
+    background-color: var(--background-color);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .inputsWrapper {
+        width: 90%;
+        margin: 50px 0 30px;
+        @include universal-border-radius;
+        @include universal-box-shadow;
+        @include input-max-width;
+
+        .title,
+        .description {
+            @include medium-font;
+        }
+
+        .title {
+            border: none;
+            @include universal-border-radius;
+            @include input-width-and-padding;
+        }
+
+        .description {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            font-weight: 200;
+            margin-bottom: -8px;
+            margin-top: -1px;
+            height: 60px;
+            @include universal-border-radius;
+            @include input-width-and-padding;
+        }
+    }
+
+    .formButtonContainer {
+        background-color: var(--secondary-background-color);
+        width: fit-content;
+
+        button {
+            text-align: center;
+            background-color: var(--primary-color);
+            color: var(--secondary-font-color);
+            width: 150px;
+            padding-top: 6px;
+            letter-spacing: 0.6px;
+            @include medium-font;
+            @include universal-border-radius;
+            @include universal-box-shadow;
+        }
+    }
+}

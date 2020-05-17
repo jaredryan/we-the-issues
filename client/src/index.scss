@@ -5,10 +5,21 @@
     font-weight: 200;
 }
 
+:root {
+    --primary-color: #ff8383;
+    --secondary-color: rgba(195, 205, 230, 0.95);
+    --tertiary-color: rgba(155, 222, 255, 0.8);
+    --background-color: rgb(229, 228, 226);
+    --secondary-background-color: #fffafa;
+    --border-color: rgb(207, 204, 199);
+    --primary-font-color: black;
+    --secondary-font-color: #fffafa;
+}
+
 body {
     margin: 0;
     padding: 0;
-    background-color: #EDEAE5;
+    background-color: var(--background-color);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -16,18 +27,40 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
 }
 
-button:hover {
-    cursor: pointer;
-    border: 1px solid rgb(107, 104, 99)
+input:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }
 
 button {
-    border: 1px solid rgb(207, 204, 199);
+    border: none;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.75;
+        transition-duration: 300ms;
+    }
+}
+
+@mixin universal-box-shadow {
+    -webkit-box-shadow: 0px 3px 5px -3px black;
+            box-shadow: 0px 3px 5px -3px black;
+}
+
+@mixin universal-border-radius {
+    border-radius: 2px;
+}
+
+input,
+textarea,
+.buttonContainer {
+    background-color: var(--secondary-background-color);
 }
 
 .banner {
-    background: -webkit-gradient(linear, left top, left bottom, from(rgba(159, 237, 215, 0.5)), to(rgba(159, 237, 215, 0.5))), url("Images/title.jpg") no-repeat center center;
-    background: linear-gradient(rgba(159, 237, 215, 0.5), rgba(159, 237, 215, 0.5)), url("Images/title.jpg") no-repeat center center;
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(155,221,255, 0.5)), to(rgba(155,221,255, 0.5))), url("Images/title.jpg") no-repeat center center;
+    background: linear-gradient(rgba(155,221,255, 0.5), rgba(155,221,255, 0.5)), url("Images/title.jpg") no-repeat center center;
     background-size: cover;
     height: 500px;
     position: relative;
@@ -41,14 +74,14 @@ button {
             transform: translate(-50%, -50%);
     font-size: 90px;
     font-weight: 200;
-    color: black;
+    color: var(--primary-font-color);
     margin-top: 0;
     margin-bottom: 0;
     text-align: center;
 }
 
 .issueList {
-    background-color: #EDEAE5;
+    background-color: var(--background-color);
     padding-left: 5%;
     padding-right: 5%;
     margin-bottom: 0px;
@@ -58,14 +91,12 @@ button {
 }
 
 .issue {
-    background-color: white;
-    border: 1px solid rgb(207, 204, 199);
-    border-radius: 5px;
-    color: black;
+    background-color: var(--secondary-background-color);
+    @include universal-border-radius;
+    color: var(--primary-font-color);
     margin: 30px auto;
     text-align: center;
-    -webkit-box-shadow: 4px 8px 30px 1px black;
-            box-shadow: 4px 8px 30px 1px black;
+    @include universal-box-shadow;
     width: 400px;
     padding: 0px 10px;
     width: 100%;
@@ -73,7 +104,7 @@ button {
 }
 
 .newPost {
-    background-color: #EDEAE5;
+    background-color: var(--background-color);
     margin-bottom: 0px;
     margin-top: 0px;
     text-align: center;
@@ -82,13 +113,12 @@ button {
 }
 
 .inputsWrapper {
-    width: 50%;
-    min-width: 340px;
-    -webkit-box-shadow: 4px 8px 30px 1px black;
-            box-shadow: 4px 8px 30px 1px black;
-    margin: 0px auto;
+    margin: 0 auto;
     padding: 0;
-    border-radius: 5px;
+    max-width: 500px;
+    width: 90%;
+    @include universal-border-radius;
+    @include universal-box-shadow;
 }
 
 .title {
@@ -97,10 +127,9 @@ button {
     font-size: 19px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border: 1px solid rgb(207, 204, 199);
+    border: none;
     font-weight: 400;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    @include universal-border-radius;
 }
 
 .description {
@@ -109,34 +138,32 @@ button {
     font-size: 18px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border: 1px solid rgb(207, 204, 199);
+    border: none;
+    border-top: 1px solid var(--border-color);
     font-weight: 200;
     margin-bottom: -8px;
     margin-top: -1px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    @include universal-border-radius;
     height: 60px;
 }
 
-.newPost button {
-    font-size: 20px;
-    background-color: #FCE181;
-    color: #026670;
-    width: 150px;
-    border-radius: 5px;
-    padding-top: 6px;
-    font-weight: 400;
-    letter-spacing: 0.6px;
+.newPost .formButtonContainer {
+    background-color: var(--secondary-background-color);
+    width: fit-content;
+    margin: auto;
     margin-top: 10px;
-    -webkit-box-shadow: 2px 2px 4px 1px black;
-            box-shadow: 2px 2px 4px 1px black;
-}
 
-.newPost button:hover {
-    background-color: white;
-    color: black;
-    -webkit-box-shadow: 1px 1px 2px 0px black;
-            box-shadow: 1px 1px 2px 0px black;
+    button {
+        font-size: 20px;
+        background-color: var(--primary-color);
+        color: var(--secondary-font-color);
+        width: 150px;
+        @include universal-border-radius;
+        @include universal-box-shadow;
+        padding-top: 6px;
+        font-weight: 400;
+        letter-spacing: 0.6px;
+    }
 }
 
 .issueList .issueLoader {
@@ -153,11 +180,9 @@ button {
             transform: translate(-50%, -50%);
 }
 
-.issueInfo form button:hover,
-.issueInfo .voting button:hover,
-.issueInfo button:hover {
-    background-color: #EDEAE5;
-    color: black;
+.comment button:hover {
+    background-color: rgb(245, 244, 242);
+    opacity: 0.95;
 }
 
 .issueInfo h1 {
@@ -181,9 +206,9 @@ button {
 
 .issueInfo .voting button {
     font-size: 20px;
-    color: white;
-    background-color: #026670;
-    border-radius: 5px;
+    color: var(--secondary-font-color);
+    background-color: var(--primary-color);
+    @include universal-border-radius;
     height: 28px;
     padding-top: 0px;
     width: 28px;
@@ -194,12 +219,12 @@ button {
 
 .issueInfo button {
     font-size: 20px;
-    border-radius: 5px;
+    @include universal-border-radius;
     height: 28px;
     width: 100px;
     vertical-align: middle;
-    background-color: #FEF9C7;
-    color: #026670;
+    background-color: var(--secondary-color);
+    color: var(--secondary-font-color);
     margin-left: 10px;
     margin-right: 10px;
     font-weight: 400;
@@ -220,8 +245,8 @@ button {
     margin-top: 10px;
     margin-bottom: 10px;
     height: 34px;
-    border: 1px solid rgb(207, 204, 199);
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    @include universal-border-radius;
 }
 
 .issueEdit {
@@ -240,18 +265,18 @@ button {
     margin-top: 10px;
     margin-bottom: 10px;
     height: 34px;
-    border: 1px solid rgb(207, 204, 199);
+    border: 1px solid var(--border-color);
 }
 
 .issueEdit button {
     font-size: 18px;
-    border-radius: 5px;
+    @include universal-border-radius;
     height: 26px;
     width: 75px;
     font-weight: 500;
     vertical-align: middle;
-    color: white;
-    background-color: #026670;
+    color: var(--secondary-font-color);
+    background-color: var(--primary-color);
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 30px;
@@ -260,27 +285,25 @@ button {
 .issueEdit input {
     font-size: 20px;
     margin-bottom: 0;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    @include universal-border-radius;
 }
 
 .issueEdit textarea {
     font-size: 18px;
     margin-top: -1px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    @include universal-border-radius;
     height: 60px;
 }
 
 .issueInfo form button {
     font-size: 18px;
-    border-radius: 5px;
+    @include universal-border-radius;
     height: 26px;
     width: 75px;
     font-weight: 500;
     vertical-align: middle;
-    color: white;
-    background-color: #026670;
+    color: var(--secondary-font-color);
+    background-color: var(--primary-color);
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 30px;
@@ -290,13 +313,16 @@ button {
 .comment form {
     width: 100%;
     max-width: 500px;
-    background-color: rgba(159, 237, 215, 0.6);
+    background-color: var(--tertiary-color);
     border-radius: 10px;
     margin: 15px auto;
     padding: 10px 20px;
     text-align: left;
-    -webkit-box-shadow: 2px 2px 4px 1px black;
-            box-shadow: 2px 2px 4px 1px black;
+    @include universal-box-shadow;
+}
+
+.comment input {
+    border: none;
 }
 
 .comment form {
@@ -308,7 +334,7 @@ button {
     margin: 0;
 }
 
-.commentInfo h4{
+.commentInfo h4 {
     margin: 0;
     margin-bottom: 15px;
 }
@@ -320,15 +346,14 @@ button {
 .commentInfo button,
 .comment form button {
     font-size: 14px;
-    border-radius: 5px;
+    @include universal-border-radius;
     height: 22px;
     width: 60px;
     padding-top: 2px;
     font-weight: 500;
     vertical-align: middle;
-    color: #026670;
-    background-color: white;
-    margin-top: 3px;
+    color: var(--primary-color);
+    background-color: var(--secondary-background-color);
 }
 
 .comment form button {
@@ -346,4 +371,9 @@ button {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
+    margin-top: 3px;
+
+    &:first-of-type {
+        margin-top: 0px;
+    }
 }

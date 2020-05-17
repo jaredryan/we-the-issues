@@ -1,4 +1,8 @@
-import { configureStore, createSlice, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { 
+    configureStore,
+    createSlice,
+    getDefaultMiddleware
+} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import axios from 'axios';
 

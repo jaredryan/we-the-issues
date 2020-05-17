@@ -52,7 +52,9 @@ class Form extends Component {
                     ></textarea>
                 </div>
                 <br/>
-                <button>Submit</button>
+                <div className="formButtonContainer">
+                    <button>Submit</button>
+                </div>
             </form>
         );
     };

@@ -10,7 +10,8 @@ import './app.scss';
 export const client = new w3cwebsocket('ws://localhost:8000');
 
 class App extends Component {
-    componentWillMount() {
+    constructor() {
+        super();
         client.onmessage = (message) => this.props.dispatchAction(JSON.parse(message.data));
     }
 

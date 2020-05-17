@@ -1,5 +1,6 @@
 import { 
     configureStore,
+    createAsyncThunk,
     createSlice,
     getDefaultMiddleware
 } from '@reduxjs/toolkit';
@@ -7,6 +8,8 @@ import logger from 'redux-logger';
 import axios from 'axios';
 
 import { client } from './App';
+
+// helper functions
 
 const getMinutes = date => date.getMinutes() < 10
     ? "0" + date.getMinutes()
@@ -20,23 +23,39 @@ const getDate = date => (
 
 const getTimeAndDate = date => `${getTime(date)}@${getDate(date)}`
 
+const updateOtherClients = (action) => !action.payload.fromWebSocket && client.send(JSON.stringify(action));
+
+export const getIssues = createAsyncThunk(
+    'getIssues',
+    async (thunkAPI) => {
+        try {
+            const response = await axios.get("/issues");
+            return response.data;
+        } catch(error) {
+            thunkAPI.rejectWithValue(error.response.statusText)
+        }
+    }
+);
+
+// export const getIssues = () => dispatch => {
+//     slice.actions.loading();
+//     setTimeout(() => {
+//         axios.get("/issues")
+//             .then(response => dispatch(slice.actions.getIssues({ issues: response.data })))
+//             .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
+//     }, 1000)
+// }
+
 const initialState = {
     issues: [],
     error: "",
     loading: false
 };
 
-const updateOtherClients = (action) => !action.payload.fromWebSocket && client.send(JSON.stringify(action));
-
 const slice = createSlice({
     name: 'issues',
     initialState,
     reducers: {
-        getIssues: (state, action) => {
-            state.issues = action.payload.issues;
-            state.loading = false;
-            state.error = null;
-        },
         addIssue: (state, action) => {
             state.issues.unshift(action.payload.issue);
             state.loading = false;
@@ -74,17 +93,22 @@ const slice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+    },
+    extraReducers: {
+        [getIssues.pending]: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        [getIssues.fulfilled]: (state, action) => {
+            state.issues = action.payload;
+            state.loading = false;
+        },
+        [getIssues.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
-
-export const getIssues = () => dispatch => {
-    slice.actions.loading();
-    setTimeout(() => {
-        axios.get("/issues")
-            .then(response => dispatch(slice.actions.getIssues({ issues: response.data })))
-            .catch(error => dispatch(slice.actions.apiError(error.response.statusText)));
-    }, 1000)
-}
 
 export const addIssue = issue => dispatch => {
     issue.votes = 0;
